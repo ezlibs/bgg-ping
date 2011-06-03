@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">BGG Test Tools</string>
+    <string name="app_name">Ping!</string>
+    <string name="host">输入服务器地址或IP</string>
+    <string name="ping">Ping!</string>
+    <string name="times">请选择Ping!次数</string>
+    <string name="hosts">请选择服务器</string>
+    <string name="config">在此输入服务器地址，以换行分隔</string>
+    <string name="config_string">配置默认服务器地址</string>
+    <string name="widget">PingWidget</string>
+</resources>
