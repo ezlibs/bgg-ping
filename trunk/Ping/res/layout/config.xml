@@ -1,23 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
-	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:orientation="vertical">
-		<TextView android:layout_height="wrap_content" android:text="@string/config_string"
-			android:layout_width="fill_parent" android:textSize="18dip"
-			android:gravity="center" />
-		<EditText android:layout_height="wrap_content" android:id="@+id/editText1"
-			android:layout_width="fill_parent" android:hint="@string/config"
-			android:lines="5"></EditText>
-		<RelativeLayout android:id="@+id/relativeLayout1"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true">
-			<Button android:id="@+id/button1" android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true" android:text="保存"
-				android:layout_width="80dip"></Button>
-			<Button android:id="@+id/button2" android:layout_height="wrap_content"
-				android:layout_alignParentRight="true" android:text="退出"
-				android:layout_width="80dip"></Button>
-		</RelativeLayout>
-	</LinearLayout>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/config_string"
+            android:textSize="18dip" />
+
+        <EditText
+            android:id="@+id/userHostConfig"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/config"
+            android:lines="5" >
+        </EditText>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="保存" >
+            </Button>
+
+            <Button
+                android:id="@+id/exitButton"
+                android:layout_width="80dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="退出" >
+            </Button>
+        </RelativeLayout>
+    </LinearLayout>
+
 </ScrollView>

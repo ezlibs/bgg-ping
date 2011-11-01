@@ -27,9 +27,9 @@ public class Config extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.config);
 
-		Button save = (Button) this.findViewById(R.id.button1);
-		Button cancel = (Button) this.findViewById(R.id.button2);
-		final EditText hostList = (EditText) findViewById(R.id.editText1);
+		Button save = (Button) this.findViewById(R.id.saveButton);
+		Button cancel = (Button) this.findViewById(R.id.exitButton);
+		final EditText hostList = (EditText) findViewById(R.id.userHostConfig);
 
 		hostList.setText(getConfig());
 		save.setOnClickListener(new View.OnClickListener() {

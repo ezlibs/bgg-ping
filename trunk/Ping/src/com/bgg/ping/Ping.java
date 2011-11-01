@@ -10,8 +10,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import com.bgg.ping.R;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,53 +44,53 @@ public class Ping extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		// 控件
+		final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+		final Button ping = (Button) this.findViewById(R.id.pingButton);
+		final TextView pingResult = (TextView) findViewById(R.id.pingResult);
+		final TextView ipInfo = (TextView) findViewById(R.id.ipInfo);
+		final EditText userHost = (EditText) findViewById(R.id.userHost);
+		final Spinner times = (Spinner) findViewById(R.id.timesSpinner);
+		final Spinner hosts = (Spinner) findViewById(R.id.hostsSpinner);
 		//
 		final StringBuffer s = new StringBuffer("");
-
-		// 控件
-		Button button = (Button) this.findViewById(R.id.button1);
-		final TextView tv = (TextView) findViewById(R.id.textView1);
-		final TextView tv2 = (TextView) findViewById(R.id.textView2);
-		final EditText et = (EditText) findViewById(R.id.editText1);
-		final Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
-		final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-
-		//
-		final Handler cwjHandler = new Handler();
+		final Handler resultHandler = new Handler();
 		final Runnable mUpdateResults = new Runnable() {
 			@Override
 			public void run() {
-				setText(tv, s);
+				setText(pingResult, s);
+				scrollView.scrollTo(0, scrollView.getHeight());
 			}
 		};
 
-		tv2.setText("本机IP地址为：" + getLocalIpAddress());
-		tv.setMovementMethod(ScrollingMovementMethod.getInstance());
+		ipInfo.setText("本机IP地址为：" + getLocalIpAddress());
+		pingResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
 		// 监听
-		spinner2.setOnItemSelectedListener(new OnItemSelectedListener() {
+		hosts.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int postion, long id) {
-				if (spinner2.getSelectedItem().toString()
+				if (hosts.getSelectedItem().toString()
 						.equalsIgnoreCase("other")) {
-					et.setVisibility(View.VISIBLE);
+					userHost.setVisibility(View.VISIBLE);
+
 				} else {
-					et.setVisibility(View.INVISIBLE);
+					userHost.setVisibility(View.GONE);
 				}
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				et.setVisibility(View.INVISIBLE);
+				userHost.setVisibility(View.INVISIBLE);
 			}
 		});
 		// 点击
-		button.setOnClickListener(new View.OnClickListener() {
+		ping.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
+				ping.setEnabled(false);
 				// 提示框
 				final ProgressDialog dialog = ProgressDialog.show(Ping.this,
 						"Ping! now", "Please Wait...", true);
@@ -102,47 +101,61 @@ public class Ping extends Activity {
 					}
 				};
 
-				Thread checkUpdate = new Thread() {
+				Thread process = new Thread() {
 					@Override
 					public void run() {
 						// 获取文本框以及下拉框的值
 						s.delete(0, s.length());
-						String selectHost = spinner2.getSelectedItem()
-								.toString();
+						String selectHost = hosts.getSelectedItem().toString();
 						String host = selectHost;
 						if (selectHost.equalsIgnoreCase("other")) {
-							host = et.getText().toString();
+							host = userHost.getText().toString();
+						} else if (selectHost.indexOf(": ") != -1) {
+							host = selectHost.split(" ")[1];
 						} else {
 							host = selectHost.split(" ")[0];
 						}
 						if (host.equalsIgnoreCase(getString(R.string.host))) {
-							cwjHandler.post(mUpdateResults);
+							resultHandler.post(mUpdateResults);
 							return;
 						}
-						String count = spinner1.getSelectedItem().toString();
+						String count = times.getSelectedItem().toString();
 
 						// 处理
 						try {
 							InputStream is = Runtime.getRuntime()
 									.exec("ping -c " + count + " " + host)
 									.getInputStream();
-							// s.append("ping -c " + count + " " + host + "\n");
-							cwjHandler.post(mUpdateResults);
+							resultHandler.post(mUpdateResults);
 							BufferedReader in = new BufferedReader(
 									new InputStreamReader(is));
 							String str = "";
+							// 关闭滚动条
+							handler.sendEmptyMessage(0);
+							int i = 1;
 							while ((str = in.readLine()) != null) {
 								s.append(str);
-								s.append("\n");
+								String oCount = (i > Integer.valueOf(count)) ? ""
+										: "第" + String.valueOf(i) + "次: ";
+								s.append("\n" + oCount);
+								i++;
+								// 逐行打印
+								resultHandler.post(mUpdateResults);
 							}
-							cwjHandler.post(mUpdateResults);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						handler.sendEmptyMessage(0);
+						// 重新启用ping按钮
+						resultHandler.post(new Runnable() {
+
+							@Override
+							public void run() {
+								ping.setEnabled(true);
+							}
+						});
 					}
 				};
-				checkUpdate.start();
+				process.start();
 			}// end onClick
 		});// end setOnClickListener
 	}
@@ -150,9 +163,12 @@ public class Ping extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		final Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+		final Spinner hostsSpinner = (Spinner) findViewById(R.id.hostsSpinner);
 		ArrayAdapter<String> adapter;
-		String[] hostsList = { "www.google.com", "www.baidu.com", "Other" };
+		String[] hostsList = { "移动1: 221.130.195.94", "移动2: 221.130.195.19",
+				"移动3: 221.130.195.102", "电信1: 211.151.87.21",
+				"电信2: 211.151.87.28", "联通1: 210.51.30.31", "联通2: 210.51.30.48",
+				"Other" };
 		String hosts = getConfig();
 		if (!hosts.equals(null) && !hosts.equals("\n") && !hosts.equals("")) {
 			hostsList = hosts.split("\n");
@@ -160,7 +176,7 @@ public class Ping extends Activity {
 		adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, hostsList);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner2.setAdapter(adapter);
+		hostsSpinner.setAdapter(adapter);
 	}
 
 	private void setText(TextView tv, StringBuffer s) {

@@ -1,27 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent">
-	<LinearLayout android:orientation="vertical"
-		android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<TextView android:layout_height="wrap_content" android:text="@string/hello"
-			android:layout_width="fill_parent" android:textSize="18dip"
-			android:gravity="center" />
-		<TextView android:text="" android:id="@+id/textView2"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-		<Spinner android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:id="@+id/spinner2"
-			android:prompt="@string/hosts"></Spinner>
-		<EditText android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:id="@+id/editText1"
-			android:singleLine="true" android:hint="@string/host"></EditText>
-		<Spinner android:id="@+id/spinner1" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:prompt="@string/times"
-			android:entries="@array/times"></Spinner>
-		<Button android:layout_height="wrap_content" android:id="@+id/button1"
-			android:text="@string/ping" android:layout_width="100dip"
-			android:layout_gravity="center_horizontal" android:textStyle="bold"
-			android:textSize="20dip"></Button>
-		<TextView android:layout_width="fill_parent" android:id="@+id/textView1"
-			android:layout_height="fill_parent" android:scrollbars="vertical"></TextView>
-	</LinearLayout>
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/hello"
+            android:textSize="18dip" />
+
+        <TextView
+            android:id="@+id/ipInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" >
+        </TextView>
+
+        <Spinner
+            android:id="@+id/hostsSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/hosts" >
+        </Spinner>
+
+        <EditText
+            android:id="@+id/userHost"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/host"
+            android:singleLine="true" >
+        </EditText>
+
+        <Spinner
+            android:id="@+id/timesSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/times"
+            android:prompt="@string/times" >
+        </Spinner>
+
+        <Button
+            android:id="@+id/pingButton"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/ping"
+            android:textSize="20dip"
+            android:textStyle="bold" >
+        </Button>
+
+        <TextView
+            android:id="@+id/pingResult"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </TextView>
+    </LinearLayout>
+
 </ScrollView>
