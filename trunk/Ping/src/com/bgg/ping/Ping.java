@@ -165,10 +165,12 @@ public class Ping extends Activity {
 		super.onResume();
 		final Spinner hostsSpinner = (Spinner) findViewById(R.id.hostsSpinner);
 		ArrayAdapter<String> adapter;
-		String[] hostsList = { "移动1: 221.130.195.94", "移动2: 221.130.195.19",
-				"移动3: 221.130.195.102", "电信1: 211.151.87.21",
-				"电信2: 211.151.87.28", "联通1: 210.51.30.31", "联通2: 210.51.30.48",
-				"Other" };
+		String[] hostsList = { "www.google.com", "www.baidu.com", "Other" };
+		/*
+		 * String[] hostsList = { "移动1: 221.130.195.94", "移动2: 221.130.195.19",
+		 * "移动3: 221.130.195.102", "电信1: 211.151.87.21", "电信2: 211.151.87.28",
+		 * "联通1: 210.51.30.31", "联通2: 210.51.30.48", "Other" };
+		 */
 		String hosts = getConfig();
 		if (!hosts.equals(null) && !hosts.equals("\n") && !hosts.equals("")) {
 			hostsList = hosts.split("\n");
